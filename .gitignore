@@ -29,3 +29,5 @@ Thumbs.db
 
 # ===== Environment =====
 .env
+/JavaApplication11/build/
+/JavaApplication11/nbproject/private/
