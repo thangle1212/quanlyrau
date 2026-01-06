@@ -1,0 +1,31 @@
+# ===== Java =====
+*.class
+*.jar
+*.war
+*.ear
+
+# ===== NetBeans =====
+/nbproject/private/
+/build/
+/dist/
+.nb-gradle/
+
+# ===== IntelliJ IDEA =====
+.idea/
+*.iml
+out/
+
+# ===== Eclipse =====
+.classpath
+.project
+.settings/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+
+# ===== Environment =====
+.env
