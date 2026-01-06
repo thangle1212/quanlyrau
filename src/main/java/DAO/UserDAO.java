@@ -219,4 +219,61 @@ public class UserDAO {
         }
         return false;
     }
+
+    public boolean checkUsernameExists(String username) {
+        String sql = "SELECT COUNT(*) FROM tai_khoan WHERE ten_dang_nhap = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean register(String username, String password, String hoTen, String ngaySinh, String email, String sdt, String diaChi) {
+        String userID = "U" + String.format("%04d", (int)(Math.random() * 9999) + 1);
+        String khachHangID = "KH" + String.format("%04d", (int)(Math.random() * 9999) + 1);
+
+        try (Connection conn = DBConnection.getConnection()) {
+            conn.setAutoCommit(false);
+
+            // Insert into tai_khoan
+            String sqlUser = "INSERT INTO tai_khoan (user_id, ten_dang_nhap, mat_khau, role) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(sqlUser)) {
+                ps.setString(1, userID);
+                ps.setString(2, username);
+                ps.setString(3, password);
+                ps.setString(4, "CUSTOMER");
+                ps.executeUpdate();
+            }
+
+            // Insert into khach_hang
+            String sqlCustomer = "INSERT INTO khach_hang (khach_hang_id, user_id, ho_ten, ngay_sinh, email, sdt, dia_chi) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(sqlCustomer)) {
+                ps.setString(1, khachHangID);
+                ps.setString(2, userID);
+                ps.setString(3, hoTen);
+                ps.setString(4, ngaySinh);
+                ps.setString(5, email);
+                ps.setString(6, sdt);
+                ps.setString(7, diaChi);
+                ps.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

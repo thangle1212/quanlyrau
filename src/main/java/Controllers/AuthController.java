@@ -58,6 +58,14 @@ public class AuthController {
             qmk.setVisible(true);
             v.dispose();
         });
+
+        v.btnRegister.addActionListener(e -> {
+            Dangky dk = new Dangky();
+            AuthController auth = new AuthController();
+            auth.register(dk);
+            dk.setVisible(true);
+            v.dispose();
+        });
             }
         
     public void Quenmatkhau(Quenmatkhau v) {
@@ -115,6 +123,55 @@ v.dispose();
 
         });
         v.btnBack.addActionListener(e ->{
+            Dangnhap dn = new Dangnhap();
+            AuthController auth = new AuthController();
+            auth.login(dn);
+            dn.setVisible(true);
+            v.dispose();
+        });
+    }
+
+    public void register(Dangky v) {
+        v.btnRegister.addActionListener(e -> {
+            String username = v.txtUsername.getText();
+            String password = new String(v.txtPassword.getPassword());
+            String passwordConfirm = new String(v.txtPasswordConfirm.getPassword());
+            String hoTen = v.txtHoTen.getText();
+            String ngaySinh = v.txtNgaySinh.getText();
+            String email = v.txtEmail.getText();
+            String sdt = v.txtSDT.getText();
+            String diaChi = v.txtDiaChi.getText();
+
+            // Validate inputs
+            if (username.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty() || 
+                hoTen.isEmpty() || ngaySinh.isEmpty() || email.isEmpty() || sdt.isEmpty() || diaChi.isEmpty()) {
+                v.lblMessage.setText("Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+
+            if (!password.equals(passwordConfirm)) {
+                v.lblMessage.setText("Mật khẩu không khớp");
+                return;
+            }
+
+            if (dao.checkUsernameExists(username)) {
+                v.lblMessage.setText("Tên đăng nhập đã tồn tại");
+                return;
+            }
+
+            if (dao.register(username, password, hoTen, ngaySinh, email, sdt, diaChi)) {
+                JOptionPane.showMessageDialog(v, "Đăng ký thành công. Vui lòng đăng nhập!");
+                Dangnhap dn = new Dangnhap();
+                AuthController auth = new AuthController();
+                auth.login(dn);
+                dn.setVisible(true);
+                v.dispose();
+            } else {
+                v.lblMessage.setText("Đăng ký thất bại. Vui lòng thử lại!");
+            }
+        });
+
+        v.btnBack.addActionListener(e -> {
             Dangnhap dn = new Dangnhap();
             AuthController auth = new AuthController();
             auth.login(dn);

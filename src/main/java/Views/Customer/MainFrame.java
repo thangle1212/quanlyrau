@@ -1,5 +1,8 @@
 package Views.Customer;
 
+import Views.Dangnhap;
+import Controllers.AuthController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -43,5 +46,30 @@ public class MainFrame extends JFrame {
         });
 
         add(tabbedPane, BorderLayout.CENTER);
+        add(createLogoutPanel(), BorderLayout.SOUTH);
+    }
+
+    private JPanel createLogoutPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        JButton btnLogout = new JButton("Đăng xuất");
+        
+        btnLogout.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                "Bạn có chắc chắn muốn đăng xuất?", 
+                "Xác nhận đăng xuất", 
+                JOptionPane.YES_NO_OPTION);
+            
+            if (confirm == JOptionPane.YES_OPTION) {
+                SessionManager.clearSession();
+                Dangnhap dn = new Dangnhap();
+                AuthController auth = new AuthController();
+                auth.login(dn);
+                dn.setVisible(true);
+                this.dispose();
+            }
+        });
+        
+        panel.add(btnLogout);
+        return panel;
     }
 }

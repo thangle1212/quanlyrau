@@ -18,6 +18,7 @@ public class Dangnhap extends javax.swing.JFrame {
 
     public JButton btnLogin = new JButton("ĐĂNG NHẬP");
     public JButton btnForget = new JButton("QUÊN MẬT KHẨU");
+    public JButton btnRegister = new JButton("ĐĂNG KÝ");
     public JLabel lblMessage = new JLabel("", JLabel.CENTER);
 
     /**
@@ -57,6 +58,9 @@ public class Dangnhap extends javax.swing.JFrame {
         panel.add(txtPassword);
 
         panel.add(btnForget);
+        panel.add(btnRegister);
+
+        panel.add(new JLabel(""));
         panel.add(btnLogin);
 
         return panel;
